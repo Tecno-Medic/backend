@@ -1,11 +1,13 @@
-// custom-logger.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { AsyncContextService } from '@shared/application/services/async-context-service';
 
 @Injectable()
-export class LoggingService extends Logger {
-  constructor(private readonly asyncContextService: AsyncContextService) {
-    super();
+export class CustomLoggerService extends Logger {
+  constructor(
+    private readonly asyncContextService: AsyncContextService,
+    context?: string,
+  ) {
+    super(context);
   }
 
   private getTraceId(): string {
@@ -36,4 +38,8 @@ export class LoggingService extends Logger {
   verbose(message: any, ...optionalParams: any[]) {
     super.verbose(this.formatMessage(message), ...optionalParams);
   }
+
+  // setContext(context: string) {
+  //   super.setContext(context);
+  // }
 }

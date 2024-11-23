@@ -1,4 +1,3 @@
-// logging.interceptor.ts
 import {
   Injectable,
   NestInterceptor,
@@ -7,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { LoggingService } from '@shared/application/services/loggin.service';
+import { CustomLoggerService } from '@shared/application/services/custom-logger.service';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(private readonly loggingService: LoggingService) {}
+  constructor(private readonly customLoggerService: CustomLoggerService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const now = Date.now();
@@ -19,7 +18,9 @@ export class LoggingInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         tap(() =>
-          this.loggingService.log(`Tiempo de ejecución: ${Date.now() - now}ms`),
+          this.customLoggerService.log(
+            `Tiempo de ejecución: ${Date.now() - now}ms`,
+          ),
         ),
       );
   }

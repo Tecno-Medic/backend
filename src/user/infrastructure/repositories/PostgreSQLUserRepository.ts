@@ -5,12 +5,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { User } from '@user/domain/entities/User';
 import { UserRepository } from '@user/domain/repositories/user.repository';
 import { eq } from 'drizzle-orm';
-import { LoggingService } from '@shared/application/services/loggin.service';
+import { CustomLoggerService } from '@shared/application/services/custom-logger.service';
 
 @Injectable()
 export class PostgreSQLUserRepository implements UserRepository {
   constructor(
-    private readonly loggingService: LoggingService,
+    private readonly customLoggerService: CustomLoggerService,
     @Inject(DRIZZLE) private db: DrizzleDB,
   ) {}
 
@@ -22,7 +22,7 @@ export class PostgreSQLUserRepository implements UserRepository {
   }
 
   async findById(id: number): Promise<any> {
-    this.loggingService.log(`${this.constructor.name}.findById: id=${id}`);
+    this.customLoggerService.log(`${this.constructor.name}.findById: id=${id}`);
     return this.db.query.users.findFirst({
       where: eq(users.id, id),
       columns: {
