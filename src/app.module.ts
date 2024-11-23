@@ -8,10 +8,10 @@ import { DrizzleModule } from '@db/drizzle.module';
 import { ProductModule } from './product/product.module';
 import { TraceIdMiddleware } from '@shared/infrastructure/middlewares/trace-id.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { AsyncContextService } from '@shared/application/services/async-context-service';
 import { AsyncContextInterceptor } from '@shared/infrastructure/interceptors/async-context.interceptor';
 import { AsyncContextModule } from '@shared/infrastructure/nest/async-context.module';
 import { SharedModule } from '@shared/infrastructure/nest/shared.module';
+import { TraceIdResponseInterceptor } from '@shared/infrastructure/interceptors/trace-id-response.interceptor';
 
 @Module({
   imports: [
@@ -29,6 +29,10 @@ import { SharedModule } from '@shared/infrastructure/nest/shared.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: AsyncContextInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TraceIdResponseInterceptor,
     },
   ],
 })
